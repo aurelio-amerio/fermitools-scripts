@@ -13,7 +13,7 @@ hpx_ebin=yes
 ebinalg=FILE
 ebinfile_txt=$root/utils/ebins.txt
 ebinfile_fits=$root/utils/ebins.fits
-outfile=$root/output/gtbin.fits
+outfile=$root/output/$dirname/gtbin.fits
 clobber=yes
 hpx_region=""
 

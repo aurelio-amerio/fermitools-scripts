@@ -3,7 +3,7 @@
 root=$1 #/archive/home/Xgam/fermi_data
 dirname=$2 #"test"
 
-expcube=$root/output/$dirname/gtexpcube2.fits 
+expcube=$root/output/$dirname/gtltcube.fits #it's the livetime cube
 outfile=$root/output/$dirname/gtpsf.fits
 irfs=P8R3_SOURCEVETO_V3
 event_type_selections=1
