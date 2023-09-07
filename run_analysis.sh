@@ -7,18 +7,20 @@ Emin=1000
 Emax=10000
 nenergies=10
 healpixorder=11 #11
-cleanup=true
 
-dowload_data=true
-run_analysis=false
+dowload_data=0
+run_analysis=0
+cleanup=1
 
 mkdir -p $root/output/$dirname
 
-if [ $dowload_data ]; then
+if [ $dowload_data = 1 ]; then
     echo "Downloading data"
     python src/download_fermi_data.py -r $root --weak_in $weak_in --weak_out $weak_out # download data
     python src/make_bin_txt.py -r $root --Emin $Emin --Emax $Emax -n $nenergies # make binning file
     python src/make_selection_txt.py -r $root --weak_in $weak_in --weak_out $weak_out # make selection file
+else
+    echo "Skipping data download"
 fi
 
 # 1) gtselect
@@ -28,7 +30,7 @@ fi
 # 5) gtexpcube2
 # 6) gtpsf
 
-if [ $run_analysis ]; then
+if [ $run_analysis = 1 ]; then
 
     echo "Running analysis"
 
@@ -61,12 +63,17 @@ if [ $run_analysis ]; then
     echo "-----gtpsf-----"
     echo " "
     src/gtpsf.sh $root $dirname $Emin $Emax
+else
+    echo "Skipping analysis"
 fi
 
 # cleanup
-if [ $cleanup ]; then
+if [ $cleanup = 1 ]; then
     echo "Performing cleanup"
     rm -r *.par
+    rm -r $root/utils/*
+else
+    echo "Skipping cleanup"
 fi
 
 echo "Done!"
