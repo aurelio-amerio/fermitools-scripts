@@ -16,7 +16,7 @@ os.makedirs(utils_path, exist_ok=True)
 
 Emin=args.Emin # MeV
 Emax=args.Emax # MeV
-nbins=10
+nbins=args.nbins
 Earr = np.logspace(np.log10(Emin), np.log10(Emax), nbins+1)
 Emin_arr = Earr[:-1]
 Emax_arr = Earr[1:]
