@@ -17,5 +17,9 @@ week_max=args.weak_out
 
 with open(f"{gtselect_utils_path}/gtselect_fits.txt", "w") as f:
     for i in range(week_min, week_max+1):
+        if i == 512:
+            #this week is missing
+            continue
+        
         f.write(f"{root}/photon/lat_photon_weekly_w{i:03d}_p305_v001.fits \n")
 
