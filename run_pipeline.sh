@@ -1,15 +1,26 @@
 #!/bin/bash
 root="/lhome/ific/a/aamerio/data/fermi"
-dirname="test_run"
+dirname="sourceveto_nside2048_front_1_200_GeV"
 weak_in=9
 weak_out=795 #795
-Emin=1000
-Emax=10000
-nenergies=10
+Emin=1000 # 1 GeV
+Emax=200000 # 200 GeV
+nenergies=30
 healpixorder=11 #11
 
+# evclass
+# 2048: "SOURCEVETO",
+# 1024: "ULTRACLEANVETO",
+# 512:  "ULTRACLEAN",
+# 256:  "CLEAN",
+# 128:  "SOURCE",
+# 64:   "TRANSIENT010",
+# 16:   "TRANSIENT020"
+evclass=2048
+evtype=1 #front
+
 dowload_data=1
-run_analysis=0
+run_analysis=1
 cleanup=1
 
 mkdir -p $root/output/$dirname
@@ -37,7 +48,7 @@ if [ $run_analysis = 1 ]; then
     echo " "
     echo "-----gtselect-----"
     echo " "
-    src/gtselect.sh $root $dirname $Emin $Emax
+    src/gtselect.sh $root $dirname $Emin $Emax $evclass $evtype
 
     echo " "
     echo "-----gtmktime-----"
@@ -57,12 +68,12 @@ if [ $run_analysis = 1 ]; then
     echo " "
     echo "-----gtexpcube2-----"
     echo " "
-    src/gtexpcube2.sh $root $dirname $healpixorder
+    src/gtexpcube2.sh $root $dirname $evtype $healpixorder
 
     echo " "
     echo "-----gtpsf-----"
     echo " "
-    src/gtpsf.sh $root $dirname $Emin $Emax
+    src/gtpsf.sh $root $dirname $Emin $Emax $evtype
 else
     echo "Skipping analysis"
 fi
