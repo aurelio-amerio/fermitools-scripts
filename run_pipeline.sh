@@ -8,7 +8,7 @@ Emax=10000
 nenergies=10
 healpixorder=11 #11
 
-dowload_data=0
+dowload_data=1
 run_analysis=0
 cleanup=1
 
