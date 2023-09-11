@@ -5,6 +5,7 @@ This repository contains a short series of scripts needed to obtain the fits fil
 The scripts are written in Bash and Python 3 and require the following packages:
 - The fermi tools as installed via the official conda channel (`conda create -n fermi -c conda-forge -c fermi fermitools numpy=1.20`)
 - tqdm (`conda install tqdm`)
+- to convert fits files to hdf5, you need to install `fits2hdf` and `six` (`pip install six` and `pip install git+https://github.com/telegraphic/fits2hdf.git`)
 
 ## Usage
 It is recommended to run the scripts through the `run_pipeline.sh` script with the desired configuration.

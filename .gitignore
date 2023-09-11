@@ -163,3 +163,4 @@ cython_debug/
 *.par
 test_run
 gtselect_fits.txt
+.vscode/

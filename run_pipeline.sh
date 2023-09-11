@@ -21,6 +21,7 @@ evtype=1 #front
 
 dowload_data=1
 run_analysis=1
+hdf5=1
 cleanup=1
 
 mkdir -p $root/output/$dirname
@@ -76,6 +77,16 @@ if [ $run_analysis = 1 ]; then
     src/gtpsf.sh $root $dirname $Emin $Emax $evtype
 else
     echo "Skipping analysis"
+fi
+
+# hdf5 conversion
+if [ $hdf5 = 1 ]; then
+    echo "Converting fits files to hdf5"
+    mkdir -p $root/output/$dirname/hdf5
+    fits2hdf -f $root/output/$dirname $root/output/$dirname/hdf5 -c gzip
+
+else
+    echo "Skipping hdf5 conversion"
 fi
 
 # cleanup
