@@ -1,6 +1,6 @@
 #!/bin/bash
 root="/lhome/ific/a/aamerio/data/fermi"
-dirname="sourceveto_nside2048_front_1_200_GeV"
+dirname="ultracleanveto_nside2048_front_1_200_GeV"
 weak_in=9
 weak_out=795 #795
 Emin=1000 # 1 GeV
@@ -16,7 +16,7 @@ healpixorder=11 #11
 # 128:  "SOURCE",
 # 64:   "TRANSIENT010",
 # 16:   "TRANSIENT020"
-evclass=2048
+evclass=1024 # default 2048
 evtype=1 #front
 
 dowload_data=1

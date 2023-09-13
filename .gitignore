@@ -164,3 +164,4 @@ cython_debug/
 test_run
 gtselect_fits.txt
 .vscode/
+sub/condor_logs/
