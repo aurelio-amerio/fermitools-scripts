@@ -11,7 +11,7 @@ source_right_ascensio=0
 source_declination=0
 emin=$3 #1000
 emax=$4 #10000
-Ne=50
+Ne=200
 max_radius=20
 Nangle=300
 

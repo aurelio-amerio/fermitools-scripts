@@ -4,7 +4,7 @@ executable              = start_cpujob.sh
 arguments               = ""
 getenv = True
 
-Request_Memory = 10960
+Request_Memory = 50000
 Request_cpus = 5
 
 log                     = condor_logs/cpujob.log
