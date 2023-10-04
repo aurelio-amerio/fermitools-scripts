@@ -38,8 +38,6 @@ mkdir -p $root/output/$dirname
 if [ $dowload_data = 1 ]; then
     echo "Downloading data"
     python src/download_fermi_data.py -r $root --weak_in $weak_in --weak_out $weak_out # download data
-    python src/make_bin_txt.py -r $root --Emin $Emin --Emax $Emax -n $nenergies --ebins $Earr # make binning file
-    python src/make_selection_txt.py -r $root --weak_in $weak_in --weak_out $weak_out # make selection file
 else
     echo "Skipping data download"
 fi
@@ -54,6 +52,9 @@ fi
 if [ $run_analysis = 1 ]; then
 
     echo "Running analysis"
+
+    python src/make_bin_txt.py -r $root --Emin $Emin --Emax $Emax -n $nenergies --ebins $Earr # make binning file
+    python src/make_selection_txt.py -r $root --weak_in $weak_in --weak_out $weak_out # make selection file
 
     echo " "
     echo "-----gtselect-----"

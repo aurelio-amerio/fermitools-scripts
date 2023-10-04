@@ -8,8 +8,8 @@ Request_Memory = 50000
 Request_cpus = 5
 
 log                     = condor_logs/cpujob.log
-output                  = condor_logs/outfile.$(Cluster).out
-error                   = condor_logs/errors.$(Cluster).err
+output                  = condor_logs/outfile.out
+error                   = condor_logs/errors.err
 
 # cpu job
 #+testJob = True
