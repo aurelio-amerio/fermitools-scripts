@@ -53,7 +53,7 @@ if [ $run_analysis = 1 ]; then
 
     echo "Running analysis"
 
-    python src/make_bin_txt.py -r $root --Emin $Emin --Emax $Emax -n $nenergies --ebins $Earr # make binning file
+    python src/make_bin_txt.py -r $root --Emin $Emin --Emax $Emax -n $nenergies --ebins "$Earr" # make binning file
     python src/make_selection_txt.py -r $root --weak_in $weak_in --weak_out $weak_out # make selection file
 
     echo " "
