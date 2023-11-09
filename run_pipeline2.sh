@@ -1,12 +1,12 @@
 #!/bin/bash
 root="/lhome/ific/a/aamerio/data/fermi"
-dirname="sourceveto_nside2048_front_0.1_1000_GeV_w9-795"
+dirname="sourceveto_nside2048_front_1_10_GeV_w9-745"
 weak_in=9
-weak_out=795 #795
-Emin=100 # MeV # 0.5 GeV
-Emax=1000000 # MeV # 1000 GeV
-Earr="100 1000 10000 100000 1000000" # MeV
-nenergies=8 # number of energies per bin, if Earr is specfied, else it's the total number of energies between Emin - Emax, in log scale
+weak_out=745 #795 #795
+Emin=1000 # MeV # 1 GeV
+Emax=10000 # MeV # 10 GeV
+Earr="1000 10_000" # MeV
+nenergies=10 # number of energies per bin, if Earr is specfied, else it's the total number of energies between Emin - Emax, in log scale
 healpixorder=11 #11
 
 # evclass
@@ -147,3 +147,4 @@ else
 fi
 
 echo "Done!"
+
