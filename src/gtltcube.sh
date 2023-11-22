@@ -3,7 +3,7 @@
 root=$1 #/archive/home/Xgam/fermi_data
 dirname=$2 #"test"
 
-scfile=$root/spacecraft/lat_spacecraft_merged.fits
+scfile=$root/utils/spacecraft_list.txt
 evfile=$root/output/$dirname/gtmktime.fits 
 
 zmax=90
@@ -14,5 +14,5 @@ chatter=4
 clobber=yes
 
 
-gtltcube scfile=$scfile evfile=$evfile zmax=$zmax dcostheta=$dcostheta \
-    binsz=$binsz outfile=$outfile chatter=$chatter clobber=$clobber
+gtltcube scfile=$scfile evfile=$evfile evtable="EVENTS" zmin=0.0 zmax=$zmax dcostheta=$dcostheta \
+    binsz=$binsz outfile=$outfile chatter=$chatter clobber=$clobber mode="ql"

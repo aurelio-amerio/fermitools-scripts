@@ -1,6 +1,6 @@
 #!/bin/bash
 root="/lhome/ific/a/aamerio/data/fermi"
-dirname="sourceveto_nside2048_front_1_10_GeV_w9-745"
+dirname="sourceveto_nside2048_front_1_10_GeV_w9-745_v3"
 weak_in=9
 weak_out=745 #795 #795
 Emin=1000 # MeV # 1 GeV
@@ -20,7 +20,7 @@ healpixorder=11 #11
 evclass=2048 # default 2048
 evtype=1 #front
 
-dowload_data=0
+dowload_data=1
 
 run_analysis=1
 gtselect=1
@@ -31,7 +31,7 @@ gtexpcube2=1
 gtpsf=1
 
 hdf5=1
-cleanup=1
+cleanup=0
 
 
 mkdir -p $root/output/$dirname
@@ -40,14 +40,14 @@ basedir=$(pwd)
 tmpdir=$(mktemp -d -p . )
 cd $tmpdir
 
-# deletes the temp directory
-function cleanup {      
-  rm -rf "$tmpdir"
-  echo "Deleted temp working directory $tmpdir"
-}
+# # deletes the temp directory
+# function cleanup {      
+#   rm -rf "$tmpdir"
+#   echo "Deleted temp working directory $tmpdir"
+# }
 
-# register the cleanup function to be called on the EXIT signal
-trap cleanup EXIT
+# # register the cleanup function to be called on the EXIT signal
+# trap cleanup EXIT
 
 if [ $dowload_data = 1 ]; then
     echo "Downloading data"
@@ -69,6 +69,7 @@ if [ $run_analysis = 1 ]; then
 
     python $basedir/src/make_bin_txt.py -r $root --Emin $Emin --Emax $Emax -n $nenergies --ebins "$Earr" # make binning file
     python $basedir/src/make_selection_txt.py -r $root --weak_in $weak_in --weak_out $weak_out # make selection file
+    python $basedir/src/make_spacecraft_txt.py -r $root --weak_in $weak_in --weak_out $weak_out # make selection file
 
     echo " "
     echo "-----gtselect-----"
@@ -142,6 +143,7 @@ if [ $cleanup = 1 ]; then
     echo "Performing cleanup"
     rm -r *.par
     rm -r $root/utils/*
+    rm -rf "$tmpdir"
 else
     echo "Skipping cleanup"
 fi

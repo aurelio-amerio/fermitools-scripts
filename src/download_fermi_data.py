@@ -89,17 +89,29 @@ if download_photon_data:
     download_parallel(inputs, len(urls), num_workers=num_workers)
     print("done")
 #%% download spacecraft
+# download_folder = f"{base_path}/spacecraft"
+# os.makedirs(download_folder, exist_ok=True)
+
+# url = "https://heasarc.gsfc.nasa.gov/FTP/fermi/data/lat/mission/spacecraft/lat_spacecraft_merged.fits"
+# destination = f"{download_folder}/lat_spacecraft_merged.fits"
+
+# inputs = (url, destination)
+#%% spacecraft
 download_folder = f"{base_path}/spacecraft"
 os.makedirs(download_folder, exist_ok=True)
 
-url = "https://heasarc.gsfc.nasa.gov/FTP/fermi/data/lat/mission/spacecraft/lat_spacecraft_merged.fits"
-destination = f"{download_folder}/lat_spacecraft_merged.fits"
+urls = []
+destinations = []
+for i in np.arange(week_in , week_out+1):
+    urls.append(f"https://heasarc.gsfc.nasa.gov/FTP/fermi/data/lat/weekly/spacecraft/lat_spacecraft_weekly_w{i:03d}_p310_v001.fits")
+    destinations.append(f"{download_folder}/lat_spacecraft_weekly_w{i:03d}_p310_v001.fits")
 
-inputs = (url, destination)
+inputs = zip(urls, destinations)
+
 #%%
 if download_spacecraft_data:
-    print_msg_box("Downloading spacecraft file")
-    download_url(inputs)
+    print_msg_box("Downloading spacecraft data")
+    download_parallel(inputs, len(urls), num_workers=num_workers)
     print("done")
 #%% download 4FGL sources
 download_folder = f"{base_path}/4FGL"

@@ -40,14 +40,14 @@ basedir=$(pwd)
 tmpdir=$(mktemp -d -p . )
 cd $tmpdir
 
-# deletes the temp directory
-function cleanup {      
-  rm -rf "$tmpdir"
-  echo "Deleted temp working directory $tmpdir"
-}
+# # deletes the temp directory
+# function cleanup {      
+#   rm -rf "$tmpdir"
+#   echo "Deleted temp working directory $tmpdir"
+# }
 
-# register the cleanup function to be called on the EXIT signal
-trap cleanup EXIT
+# # register the cleanup function to be called on the EXIT signal
+# trap cleanup EXIT
 
 if [ $dowload_data = 1 ]; then
     echo "Downloading data"
@@ -69,6 +69,7 @@ if [ $run_analysis = 1 ]; then
 
     python $basedir/src/make_bin_txt.py -r $root --Emin $Emin --Emax $Emax -n $nenergies --ebins "$Earr" # make binning file
     python $basedir/src/make_selection_txt.py -r $root --weak_in $weak_in --weak_out $weak_out # make selection file
+    python $basedir/src/make_spacecraft_txt.py -r $root --weak_in $weak_in --weak_out $weak_out # make selection file
 
     echo " "
     echo "-----gtselect-----"
@@ -142,6 +143,7 @@ if [ $cleanup = 1 ]; then
     echo "Performing cleanup"
     rm -r *.par
     rm -r $root/utils/*
+    rm -rf "$tmpdir"
 else
     echo "Skipping cleanup"
 fi

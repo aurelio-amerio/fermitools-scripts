@@ -19,4 +19,5 @@ clobber=yes
 gtexpcube2 infile=$infile cmap=$cmap outfile=$outfile irfs=$irfs \
     evtype=$evtype hpx_ordering_scheme=$hpx_ordering_scheme \
     hpx_order=$hpx_order ebinalg=$ebinalg ebinfile=$ebinfile \
-    bincalc=$bincalc clobber=$clobber
+    bincalc=$bincalc clobber=$clobber coordsys="GAL" \
+    ignorephi=no thmax=180.0 thmin=0.0 table="EXPOSURE" mode="ql"

@@ -5,7 +5,7 @@ dirname=$2 #"test"
 
 evfile=$root/output/$dirname/gtmktime.fits
 algorithm=HEALPIX
-scfile=$root/spacecraft/lat_spacecraft_merged.fits
+scfile=$root/utils/spacecraft_list.txt
 hpx_ordering_scheme=RING
 hpx_order=$3 # to change back to 11
 coordsys=GAL
@@ -25,4 +25,4 @@ echo "running gtbin"
 gtbin evfile=$evfile scfile=$scfile outfile=$outfile algorithm=$algorithm \
     ebinalg=$ebinalg hpx_ordering_scheme=$hpx_ordering_scheme hpx_order=$hpx_order \
     coordsys=$coordsys hpx_ebin=$hpx_ebin ebinfile=$ebinfile_fits \
-    clobber=$clobber hpx_region=$hpx_region
+    clobber=$clobber hpx_region=$hpx_region evtable="EVENTS" sctable="SC_DATA" efield="ENERGY" tfield="TIME"

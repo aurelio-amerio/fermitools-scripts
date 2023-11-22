@@ -29,4 +29,7 @@ chatter=4
 clobber=yes
 #default for zmax is 180
 
-gtselect infile=$infile outfile=$outfile emin=$emin emax=$emax evclass=$evclass evtype=$evtype ra=$ra dec=$dec rad=$rad tmin=$tmin tmax=$tmax zmax=$zmax clobber=$clobber chatter=$chatter
+gtselect infile=$infile outfile=$outfile ra="$ra" dec="$dec" \
+    rad="$rad" tmin="$tmin" tmax="$tmax" zmin=0.0 zmax=$zmax emin=$emin \
+    emax=$emax evclass=$evclass evtype=$evtype clobber=$clobber chatter=$chatter \
+    convtype=-1 phasemin=0.0 phasemax=1.0 evtable="EVENTS" mode="ql"

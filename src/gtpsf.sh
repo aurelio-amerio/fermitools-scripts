@@ -11,9 +11,9 @@ source_right_ascensio=0
 source_declination=0
 emin=$3 #1000
 emax=$4 #10000
-Ne=200
-max_radius=20
-Nangle=300
+Ne=300
+max_radius=30
+Nangle=6000
 
 
 gtpsf expcube=$expcube outfile=$outfile irfs=$irfs evtype=$event_type_selections \
