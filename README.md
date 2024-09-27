@@ -24,3 +24,6 @@ The `run_pipeline.sh` script will then run the fermi-tools suite to create the f
 - `gtexpcube2`
 - `gtpsf`
 
+## Utils
+
+to get mission times from weeks and vice versa, see https://heasarc.gsfc.nasa.gov/cgi-bin/Tools/xTime/xTime.pl and https://fermi.gsfc.nasa.gov/ssc/observations/timeline/ 

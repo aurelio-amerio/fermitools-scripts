@@ -1,8 +1,8 @@
 #!/bin/bash
 root="/lhome/ific/a/aamerio/data/fermi"
 dirname="sourceveto_nside2048_front_1_10_GeV_w9-745_v3"
-weak_in=9
-weak_out=745 #795 #795
+week_in=9
+week_out=745 #795 #795
 Emin=1000 # MeV # 1 GeV
 Emax=10000 # MeV # 10 GeV
 Earr="1000 10_000" # MeV
@@ -51,7 +51,7 @@ cd $tmpdir
 
 if [ $dowload_data = 1 ]; then
     echo "Downloading data"
-    python $basedir/src/download_fermi_data.py -r $root --weak_in $weak_in --weak_out $weak_out # download data
+    python $basedir/src/download_fermi_data.py -r $root --week_in $week_in --week_out $week_out # download data
 else
     echo "Skipping data download"
 fi
@@ -68,8 +68,8 @@ if [ $run_analysis = 1 ]; then
     echo "Running analysis"
 
     python $basedir/src/make_bin_txt.py -r $root --Emin $Emin --Emax $Emax -n $nenergies --ebins "$Earr" # make binning file
-    python $basedir/src/make_selection_txt.py -r $root --weak_in $weak_in --weak_out $weak_out # make selection file
-    python $basedir/src/make_spacecraft_txt.py -r $root --weak_in $weak_in --weak_out $weak_out # make selection file
+    python $basedir/src/make_selection_txt.py -r $root --week_in $week_in --week_out $week_out # make selection file
+    python $basedir/src/make_spacecraft_txt.py -r $root --week_in $week_in --week_out $week_out # make selection file
 
     echo " "
     echo "-----gtselect-----"
