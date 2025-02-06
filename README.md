@@ -11,12 +11,12 @@ The scripts are written in Bash and Python 3 and require the following packages:
 It is recommended to run the scripts through the `run_pipeline.sh` script with the desired configuration.
 The user is supposed to edit the `run_pipeline.sh` script to set the correct paths to the data and the output directory. 
 
-The `run_pipeline.sh` script will run the following scripts:
+The `run_pipeline.py` script will run the following scripts:
 - `download_fermi_data.py`: downloads the data from the Fermi-LAT data server
 - `make_bin_txt.py`: creates the energy binning file for the `gtselect` tool
 - `make_selection_txt.py`: creates the week selection file for the `gtselect` tool
 
-The `run_pipeline.sh` script will then run the fermi-tools suite to create the fits files, which will appear in the output folder under the specified directory name.
+The `run_pipeline.py` script will then run the fermi-tools suite to create the fits files, which will appear in the output folder under the specified directory name.
 - `gtselect`
 - `gtmktime`
 - `gtbin`
@@ -27,3 +27,8 @@ The `run_pipeline.sh` script will then run the fermi-tools suite to create the f
 ## Utils
 
 to get mission times from weeks and vice versa, see https://heasarc.gsfc.nasa.gov/cgi-bin/Tools/xTime/xTime.pl and https://fermi.gsfc.nasa.gov/ssc/observations/timeline/ 
+
+## Usage
+```
+python run_pipeline.py -c config.yaml
+```

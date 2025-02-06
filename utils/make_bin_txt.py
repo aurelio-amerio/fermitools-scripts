@@ -28,6 +28,8 @@ class make_bin_txt():
         with open(f"{self.utils_path}/ebins.txt", "w") as f:
             for i in np.arange(len(self.Earr)-1):
                 f.write(f"{self.Earr[i]:.6f} {self.Earr[i+1]:.6f}\n")
+            
+        print("file creted at ", f"{self.utils_path}/ebins.txt")
         return
     
 

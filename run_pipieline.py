@@ -1,19 +1,21 @@
 
 #%%
 import yaml
-import argparse
+# import argparse
 import numpy
 import os
 
 from utils.download_fermi_data import fermi_data_dowloader
 from utils.make_selection_txt import gtselect_utils
 from utils.make_bin_txt import make_bin_txt
+from utils import gt_tools
 #%%
-parser = argparse.ArgumentParser()
-parser.add_argument("-c", "--config", type=str, default="config/config.yaml")
+# parser = argparse.ArgumentParser()
+# parser.add_argument("-c", "--config", type=str, default="config/config.yaml")
 
-args = parser.parse_args()
-config_file = args.config
+# args = parser.parse_args()
+# config_file = args.config
+config_file = "config/config.yaml"
 #%%
 config_file = "config/config.yaml"
 with open(config_file, "r") as file:
@@ -21,18 +23,18 @@ with open(config_file, "r") as file:
 
 #%%
 
-ZMAX = 90
+ZMAX = config["ZMAX"]
 EVCLASS = config["EVCLASS"]
 EVTYPE = config["EVTYPE"]
 IRFS = config["IRFS"]
 HPX_MAP_ORDER = config["healpixorder"]
-FILTER_CUT = 'DATA_QUAL==1&&LAT_CONFIG==1&&LAT_MODE==5&&IN_SAA!=T' +\
-    '&&((ABS(ROCK_ANGLE)<52))'
-
+FILTER_CUT = 'DATA_QUAL==1&&LAT_CONFIG==1&&LAT_MODE==5&&IN_SAA!=T&&((ABS(ROCK_ANGLE)<52))'
 OUT_LABEL = config["OUT_LABEL"]
 Emin = config["Emin"]
 Emax = config["Emax"]
 Earr = config["Earr"]
+tmin = config["tmin"]
+tmax = config["tmax"]
 nenergies = config["nenergies"]
 
 week_in = config["week_in"]
@@ -42,8 +44,8 @@ root = config["root"]
 
 SC_FILE = f"{root}/spacecraft/lat_spacecraft_merged.fits"
 
-ebinfile_txt=f"{root}/utils/ebins.txt"
-ebinfile_fits=f"{root}/utils/ebins.fits"
+ebinfile_txt=f"{root}/output/{OUT_LABEL}/utils/ebins.txt"
+ebinfile_fits=f"{root}/output/{OUT_LABEL}/utils/ebins.fits"
 
 
 GTSELECT_DICT = {'infile': f"{root}/utils/gtselect_fits.txt",
@@ -55,8 +57,8 @@ GTSELECT_DICT = {'infile': f"{root}/utils/gtselect_fits.txt",
                  'outfile': f"{root}/output/{OUT_LABEL}/gtselect.fits",
                  'chatter': 4,
                  'clobber': 'no',
-                 'tmin': 'INDEF',
-                 'tmax': 'INDEF'}
+                 'tmin': tmin,
+                 'tmax': tmax}
 
 GTMKTIME_DICT = {'evfile': f"{root}/output/{OUT_LABEL}/gtselect.fits",
                  'scfile': SC_FILE,
@@ -73,16 +75,21 @@ GTBINDEF_DICT = {
 }
 
 GTBIN_DICT = {'evfile': f"{root}/output/{OUT_LABEL}/gtmktime.fits",
+              'scfile': SC_FILE, 
+              'outfile': f"{root}/output/{OUT_LABEL}/gtbin.fits",
               'algorithm': 'HEALPIX',
-              'scfile': SC_FILE,
               'hpx_ordering_scheme': 'RING',
               'hpx_order': HPX_MAP_ORDER,
-              'coordsys': 'GAL',
               'hpx_ebin': 'yes',
-              'ebinalg': 'FILE',
+              "hpx_region": "",
+              'coordsys': 'GAL',
               'ebinfile': ebinfile_fits,
-              'outfile': f"{root}/output/{OUT_LABEL}/gtbin.fits",
-              'clobber': 'no'}
+              'clobber': 'no',
+              'evtable': 'EVENTS',
+              'sctable': 'SC_DATA',
+              'efield': 'ENERGY',
+              'tfield': 'TIME'
+              }
 
 GTLTCUBE_DICT = {'evfile': f"{root}/output/{OUT_LABEL}/gtmktime.fits",
                  'scfile':  SC_FILE,
@@ -101,12 +108,41 @@ GTEXPCUBE2_DICT = {'infile': f"{root}/output/{OUT_LABEL}/gtltcube.fits",
                    'hpx_order': HPX_MAP_ORDER,
                    'outfile': f"{root}/output/{OUT_LABEL}/gtexpcube2.fits",
                    'ebinalg': 'FILE',
-                   'ebinfile': f"{root}/output/{OUT_LABEL}/gtbin.fits",
+                   'ebinfile': ebinfile_fits,
                    'bincalc': 'CENTER',
                    'clobber': 'no'}
 
 
+
+GTPSF_DICT =    {
+    "expcube" : f"{root}/output/{OUT_LABEL}/gtltcube.fits",
+    "outfile" : f"{root}/output/{OUT_LABEL}/gtpsf.fits",
+    "irfs" : IRFS,
+    "evtype" : EVTYPE,
+    "emin" : Emin,
+    "emax" : Emax,
+    "nenergies" : nenergies,
+    "thetamax" : 30,
+    "ntheta" : 6000
+}
+
+
 # prepare data
+os.makedirs(f"{root}/output/{OUT_LABEL}", exist_ok=True)
 fermi_data_dowloader(week_in, week_out, root).download_all()
-gtselect_utils(week_in, week_out, root).make_selection_txt()
-make_bin_txt(root, Emin, Emax, Earr, nenergies).write()
+gtselect_utils(week_in, week_out,f"{root}/output/{OUT_LABEL}").make_selection_txt()
+make_bin_txt(f"{root}/output/{OUT_LABEL}", Emin, Emax, Earr, nenergies).write()
+
+#run fermi analysis
+#%%
+# gt_tools.gtselect(GTSELECT_DICT)
+# gt_tools.gtmktime(GTMKTIME_DICT)
+gt_tools.gtbindef(GTBINDEF_DICT)
+# gt_tools.gtbin(GTBIN_DICT)
+# gt_tools.gtltcube(GTLTCUBE_DICT)
+gt_tools.gtexpcube2(GTEXPCUBE2_DICT)
+gt_tools.gtpsf(GTPSF_DICT)
+gt_tools.make_hdf5(root, OUT_LABEL)
+print("done")
+
+# %%
