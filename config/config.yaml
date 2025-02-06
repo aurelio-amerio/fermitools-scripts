@@ -14,3 +14,5 @@ EVTYPE: 1
 IRFS: 'P8R3_SOURCEVETO_V3'
 nenergies: 2 # number of energies per bin, if Earr is specfied, else it's the total number of energies between Emin - Emax, in log scale
 healpixorder: 11 #11
+psf_theta_max: 30
+psf_npoints: 6000 #number of points for the PSF

@@ -6,25 +6,27 @@ from tqdm.contrib.concurrent import process_map
 import os
 import argparse
 
-CBLUE = '\033[34m'
-CEND = '\033[0m'
+from msgbox import print_msg_box
+
+# CBLUE = '\033[34m'
+# CEND = '\033[0m'
 
 
 
-#%%
-def print_msg_box(msg, indent=1, width=None, title=None):
-    """Print message-box with optional title."""
-    lines = msg.split('\n')
-    space = " " * indent
-    if not width:
-        width = max(map(len, lines))
-    box = f'╔{"═" * (width + indent * 2)}╗\n'  # upper_border
-    if title:
-        box += f'║{space}{title:<{width}}{space}║\n'  # title
-        box += f'║{space}{"-" * len(title):<{width}}{space}║\n'  # underscore
-    box += ''.join([f'║{space}{line:<{width}}{space}║\n' for line in lines])
-    box += f'╚{"═" * (width + indent * 2)}╝'  # lower_border
-    print(CBLUE + box + CEND)
+# #%%
+# def print_msg_box(msg, indent=1, width=None, title=None):
+#     """Print message-box with optional title."""
+#     lines = msg.split('\n')
+#     space = " " * indent
+#     if not width:
+#         width = max(map(len, lines))
+#     box = f'╔{"═" * (width + indent * 2)}╗\n'  # upper_border
+#     if title:
+#         box += f'║{space}{title:<{width}}{space}║\n'  # title
+#         box += f'║{space}{"-" * len(title):<{width}}{space}║\n'  # underscore
+#     box += ''.join([f'║{space}{line:<{width}}{space}║\n' for line in lines])
+#     box += f'╚{"═" * (width + indent * 2)}╝'  # lower_border
+#     print(CBLUE + box + CEND)
 
 def download_url(args):
     t0 = time.time()

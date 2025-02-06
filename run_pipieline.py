@@ -1,7 +1,7 @@
 
 #%%
 import yaml
-# import argparse
+import argparse
 import numpy
 import os
 
@@ -9,18 +9,33 @@ from utils.download_fermi_data import fermi_data_dowloader
 from utils.make_selection_txt import gtselect_utils
 from utils.make_bin_txt import make_bin_txt
 from utils import gt_tools
+from utils.msgbox import print_msg_box
 #%%
-# parser = argparse.ArgumentParser()
-# parser.add_argument("-c", "--config", type=str, default="config/config.yaml")
+parser = argparse.ArgumentParser()
+parser.add_argument("-c", "--config", type=str, default="config/config.yaml")
 
-# args = parser.parse_args()
-# config_file = args.config
-config_file = "config/config.yaml"
+args = parser.parse_args()
+config_file = args.config
 #%%
-config_file = "config/config.yaml"
 with open(config_file, "r") as file:
     config = yaml.safe_load(file)
 
+#%%
+CBLUE = '\033[34m'
+CEND = '\033[0m'
+def print_msg_box(msg, indent=1, width=None, title=None):
+    """Print message-box with optional title."""
+    lines = msg.split('\n')
+    space = " " * indent
+    if not width:
+        width = max(map(len, lines))
+    box = f'╔{"═" * (width + indent * 2)}╗\n'  # upper_border
+    if title:
+        box += f'║{space}{title:<{width}}{space}║\n'  # title
+        box += f'║{space}{"-" * len(title):<{width}}{space}║\n'  # underscore
+    box += ''.join([f'║{space}{line:<{width}}{space}║\n' for line in lines])
+    box += f'╚{"═" * (width + indent * 2)}╝'  # lower_border
+    print(CBLUE + box + CEND)
 #%%
 
 ZMAX = config["ZMAX"]
@@ -36,6 +51,9 @@ Earr = config["Earr"]
 tmin = config["tmin"]
 tmax = config["tmax"]
 nenergies = config["nenergies"]
+
+psf_theta_max = config["psf_theta_max"]
+psf_npoints = config["psf_npoints"]
 
 week_in = config["week_in"]
 week_out = config["week_out"]
@@ -122,8 +140,8 @@ GTPSF_DICT =    {
     "emin" : Emin,
     "emax" : Emax,
     "nenergies" : nenergies,
-    "thetamax" : 30,
-    "ntheta" : 6000
+    "thetamax" : psf_theta_max,
+    "ntheta" : psf_npoints,
 }
 
 
@@ -134,15 +152,13 @@ gtselect_utils(week_in, week_out,f"{root}/output/{OUT_LABEL}").make_selection_tx
 make_bin_txt(f"{root}/output/{OUT_LABEL}", Emin, Emax, Earr, nenergies).write()
 
 #run fermi analysis
-#%%
-# gt_tools.gtselect(GTSELECT_DICT)
-# gt_tools.gtmktime(GTMKTIME_DICT)
+gt_tools.gtselect(GTSELECT_DICT)
+gt_tools.gtmktime(GTMKTIME_DICT)
 gt_tools.gtbindef(GTBINDEF_DICT)
-# gt_tools.gtbin(GTBIN_DICT)
-# gt_tools.gtltcube(GTLTCUBE_DICT)
+gt_tools.gtbin(GTBIN_DICT)
+gt_tools.gtltcube(GTLTCUBE_DICT)
 gt_tools.gtexpcube2(GTEXPCUBE2_DICT)
 gt_tools.gtpsf(GTPSF_DICT)
 gt_tools.make_hdf5(root, OUT_LABEL)
-print("done")
+print_msg_box("done")
 
-# %%

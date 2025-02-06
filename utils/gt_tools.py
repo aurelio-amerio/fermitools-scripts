@@ -4,6 +4,7 @@ import numpy as np
 import gt_apps 
 import os
 from GtApp import GtApp
+from msgbox import print_msg_box
 # %%
 gtbindef_app = GtApp('gtbindef', 'evtbin')
 gtpsf_app = GtApp('gtpsf', 'Likelihood')
@@ -14,7 +15,7 @@ def gtselect(gtselect_dict):
     """
     Calls gtselect from Science Tools.
     """
-    print('Running gtselect...')
+    print_msg_box('Running gtselect')
     
     for key in gtselect_dict.keys():
         gt_apps.filter[key] = gtselect_dict[key]
@@ -27,7 +28,7 @@ def gtmktime(maketime_dict):
     """
     Calls gtmktime from Science Tools.
     """
-    print('Running gtmktime...')
+    print_msg_box('Running gtmktime')
 
     for key in maketime_dict.keys():
         gt_apps.maketime[key] = maketime_dict[key]
@@ -41,7 +42,7 @@ def gtbindef(gtbindef_dict):
     Calls gtbin from Science Tools.
 
     """
-    print('Running gtbindef...')
+    print_msg_box('Running gtbindef')
     for key in gtbindef_dict.keys():
         gtbindef_app[key] = gtbindef_dict[key]
 
@@ -54,7 +55,7 @@ def gtbin(gtbin_dict):
     Calls gtbin from Science Tools.
 
     """
-    print('Running gtbin...')
+    print_msg_box('Running gtbin')
     for key in gtbin_dict.keys():
         gt_apps.counts_map[key] = gtbin_dict[key]
 
@@ -68,7 +69,7 @@ def gtltcube(expcube_dict):
 
 
     """
-    print('Running gtltcube...')
+    print_msg_box('Running gtltcube')
     for key in expcube_dict.keys():
         gt_apps.expCube[key] = expcube_dict[key]
 
@@ -83,7 +84,7 @@ def gtexpcube2(expcube2_dict):
 
     """
 
-    print('Running gtexpcube2...')
+    print_msg_box('Running gtexpcube2')
     for key in expcube2_dict.keys():
         gt_apps.gtexpcube2[key] = expcube2_dict[key]
 
@@ -97,7 +98,7 @@ def gtpsf(gtpsf_dict):
     Calls gtpsf from Science Tools
 
     """
-    print('Running gtpsf...')
+    print_msg_box('Running gtpsf')
     for key in gtpsf_dict.keys():
         gtpsf_app[key] = gtpsf_dict[key]
 
@@ -106,7 +107,7 @@ def gtpsf(gtpsf_dict):
     return
 
 def make_hdf5(root, dirname):
-    print("Converting fits files to hdf5")
+    print_msg_box("Converting fits files to hdf5")
     os.makedirs(f"{root}/output/{dirname}/hdf5", exist_ok=True)
     os.system(f"fits2hdf -c gzip {root}/output/{dirname} {root}/output/{dirname}/hdf5")
     return
