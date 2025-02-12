@@ -8,11 +8,11 @@ import os
 # args = parser.parse_args()
 
 class gtselect_utils():
-    def __init__(self, week_min, week_max, root):
+    def __init__(self, week_min, week_max, root, gtselect_utils_path):
         self.week_min = week_min
         self.week_max = week_max
         self.root = root
-        self.gtselect_utils_path = f"{root}/utils/"
+        self.gtselect_utils_path = gtselect_utils_path
         os.makedirs(self.gtselect_utils_path, exist_ok=True)
         return
     

@@ -7,6 +7,8 @@ getenv = True
 Request_Memory = 32GB
 Request_cpus = 1
 
++JobFlavour = "testmatch"
+
 config = config/config.yaml
 
 log                     = condor_logs/cpujob.log

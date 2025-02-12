@@ -4,6 +4,8 @@ import yaml
 import argparse
 import numpy
 import os
+import sys
+sys.path.append("utils")
 
 from utils.download_fermi_data import fermi_data_dowloader
 from utils.make_selection_txt import gtselect_utils
@@ -52,8 +54,11 @@ tmin = config["tmin"]
 tmax = config["tmax"]
 nenergies = config["nenergies"]
 
+clobber = config["clobber"]
+
 psf_theta_max = config["psf_theta_max"]
-psf_npoints = config["psf_npoints"]
+psf_nt_points = config["psf_nt_points"]
+psf_ne_points = config["psf_ne_points"]
 
 week_in = config["week_in"]
 week_out = config["week_out"]
@@ -66,7 +71,7 @@ ebinfile_txt=f"{root}/output/{OUT_LABEL}/utils/ebins.txt"
 ebinfile_fits=f"{root}/output/{OUT_LABEL}/utils/ebins.fits"
 
 
-GTSELECT_DICT = {'infile': f"{root}/utils/gtselect_fits.txt",
+GTSELECT_DICT = {'infile': f"{root}/output/{OUT_LABEL}/utils/gtselect_fits.txt",
                  'emin': Emin,
                  'emax': Emin,
                  'zmax': ZMAX,
@@ -74,7 +79,7 @@ GTSELECT_DICT = {'infile': f"{root}/utils/gtselect_fits.txt",
                  'evtype': EVTYPE,
                  'outfile': f"{root}/output/{OUT_LABEL}/gtselect.fits",
                  'chatter': 4,
-                 'clobber': 'no',
+                 'clobber': clobber,
                  'tmin': tmin,
                  'tmax': tmax}
 
@@ -83,7 +88,7 @@ GTMKTIME_DICT = {'evfile': f"{root}/output/{OUT_LABEL}/gtselect.fits",
                  'filter': FILTER_CUT,
                  'roicut': 'no',
                  'outfile': f"{root}/output/{OUT_LABEL}/gtmktime.fits",
-                 'clobber': 'no'}
+                 'clobber': clobber}
 
 GTBINDEF_DICT = {
     "bintype":"E", 
@@ -102,7 +107,7 @@ GTBIN_DICT = {'evfile': f"{root}/output/{OUT_LABEL}/gtmktime.fits",
               "hpx_region": "",
               'coordsys': 'GAL',
               'ebinfile': ebinfile_fits,
-              'clobber': 'no',
+              'clobber': clobber,
               'evtable': 'EVENTS',
               'sctable': 'SC_DATA',
               'efield': 'ENERGY',
@@ -116,7 +121,7 @@ GTLTCUBE_DICT = {'evfile': f"{root}/output/{OUT_LABEL}/gtmktime.fits",
                  'binsz': 1,
                  'outfile': f"{root}/output/{OUT_LABEL}/gtltcube.fits",
                  'chatter': 4,
-                 'clobber': 'no'}
+                 'clobber': clobber}
 
 GTEXPCUBE2_DICT = {'infile': f"{root}/output/{OUT_LABEL}/gtltcube.fits",
                    'cmap': f"{root}/output/{OUT_LABEL}/gtbin.fits",
@@ -128,7 +133,7 @@ GTEXPCUBE2_DICT = {'infile': f"{root}/output/{OUT_LABEL}/gtltcube.fits",
                    'ebinalg': 'FILE',
                    'ebinfile': ebinfile_fits,
                    'bincalc': 'CENTER',
-                   'clobber': 'no'}
+                   'clobber': clobber}
 
 
 
@@ -139,16 +144,16 @@ GTPSF_DICT =    {
     "evtype" : EVTYPE,
     "emin" : Emin,
     "emax" : Emax,
-    "nenergies" : nenergies,
     "thetamax" : psf_theta_max,
-    "ntheta" : psf_npoints,
+    "nenergies" : psf_ne_points,
+    "ntheta" : psf_nt_points,
 }
 
 
 # prepare data
 os.makedirs(f"{root}/output/{OUT_LABEL}", exist_ok=True)
 fermi_data_dowloader(week_in, week_out, root).download_all()
-gtselect_utils(week_in, week_out,f"{root}/output/{OUT_LABEL}").make_selection_txt()
+gtselect_utils(week_in, week_out,root,f"{root}/output/{OUT_LABEL}/utils").make_selection_txt()
 make_bin_txt(f"{root}/output/{OUT_LABEL}", Emin, Emax, Earr, nenergies).write()
 
 #run fermi analysis

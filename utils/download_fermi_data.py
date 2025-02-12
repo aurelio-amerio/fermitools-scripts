@@ -6,7 +6,7 @@ from tqdm.contrib.concurrent import process_map
 import os
 import argparse
 
-from msgbox import print_msg_box
+from utils.msgbox import print_msg_box
 
 # CBLUE = '\033[34m'
 # CEND = '\033[0m'
