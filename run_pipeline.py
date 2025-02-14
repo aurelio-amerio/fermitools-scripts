@@ -40,6 +40,8 @@ def print_msg_box(msg, indent=1, width=None, title=None):
     print(CBLUE + box + CEND)
 #%%
 
+initial_step = config["initial_step"]
+
 ZMAX = config["ZMAX"]
 EVCLASS = config["EVCLASS"]
 EVTYPE = config["EVTYPE"]
@@ -106,12 +108,13 @@ GTBIN_DICT = {'evfile': f"{root}/output/{OUT_LABEL}/gtmktime.fits",
               'hpx_ebin': 'yes',
               "hpx_region": "",
               'coordsys': 'GAL',
+              'ebinalg': 'FILE',
               'ebinfile': ebinfile_fits,
               'clobber': clobber,
               'evtable': 'EVENTS',
               'sctable': 'SC_DATA',
               'efield': 'ENERGY',
-              'tfield': 'TIME'
+              'tfield': 'TIME',
               }
 
 GTLTCUBE_DICT = {'evfile': f"{root}/output/{OUT_LABEL}/gtmktime.fits",
@@ -147,23 +150,24 @@ GTPSF_DICT =    {
     "thetamax" : psf_theta_max,
     "nenergies" : psf_ne_points,
     "ntheta" : psf_nt_points,
+    'clobber': clobber,
 }
 
 
-# prepare data
+# prepare data, step 0 
 os.makedirs(f"{root}/output/{OUT_LABEL}", exist_ok=True)
 fermi_data_dowloader(week_in, week_out, root).download_all()
 gtselect_utils(week_in, week_out,root,f"{root}/output/{OUT_LABEL}/utils").make_selection_txt()
 make_bin_txt(f"{root}/output/{OUT_LABEL}", Emin, Emax, Earr, nenergies).write()
 
 #run fermi analysis
-gt_tools.gtselect(GTSELECT_DICT)
-gt_tools.gtmktime(GTMKTIME_DICT)
-gt_tools.gtbindef(GTBINDEF_DICT)
+gt_tools.gtselect(GTSELECT_DICT) # step 1
+gt_tools.gtmktime(GTMKTIME_DICT) # step 2
+gt_tools.gtbindef(GTBINDEF_DICT) # step 3
 gt_tools.gtbin(GTBIN_DICT)
-gt_tools.gtltcube(GTLTCUBE_DICT)
-gt_tools.gtexpcube2(GTEXPCUBE2_DICT)
-gt_tools.gtpsf(GTPSF_DICT)
-gt_tools.make_hdf5(root, OUT_LABEL)
+gt_tools.gtltcube(GTLTCUBE_DICT) # step4
+gt_tools.gtexpcube2(GTEXPCUBE2_DICT) # step 5
+gt_tools.gtpsf(GTPSF_DICT) # step 6
+gt_tools.make_hdf5(root, OUT_LABEL) # step 7
 print_msg_box("done")
 

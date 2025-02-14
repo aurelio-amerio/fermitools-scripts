@@ -26,4 +26,7 @@ healpixorder: 11 #11
 psf_theta_max: 30
 psf_nt_points: 300 #number of theta points for the PSF
 psf_ne_points: 50 #number of energy points for the PSF
-clobber: "no"
+clobber: "no" # overwrite existing files yes/no
+
+# initial step in the analysis
+initial_step: 0
