@@ -176,6 +176,8 @@ if initial_step < 5:
 if initial_step < 6:
     gt_tools.gtexpcube2(GTEXPCUBE2_DICT) # step 5
 if initial_step < 7:
+    gt_tools.gtpsf(GTPSF_DICT) # step 6
+if initial_step < 8:
     gt_tools.make_hdf5(root, OUT_LABEL) # step 7
 
 
