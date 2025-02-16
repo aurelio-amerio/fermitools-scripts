@@ -45,6 +45,21 @@ def download_url(args):
             print('Exception in download_url():', e)
 
 
+def download_url_axel(args):
+    t0 = time.time()
+    url, fn = args[0], args[1]
+    if os.path.exists(fn):
+        # the file already exists, skipping
+        return (url, time.time() - t0)
+    else:
+        try:
+            command = f"axel -n 8 -o {fn} {url}"
+            os.system(command)
+            return (url, time.time() - t0)
+        except Exception as e:
+            print('Exception in download_url():', e)
+
+
 
 def download_parallel(iter, total, num_workers=None):
     if num_workers is None:
@@ -59,16 +74,16 @@ def download_parallel(iter, total, num_workers=None):
     return res
 #%%
 class fermi_data_dowloader:
-    def __init__(self, week_in, week_out, root):
+    def __init__(self, week_in, week_out, root, gll_psc_v=35):
 
         self.week_in = week_in
         self.week_out = week_out
-        self.gll_psc_v = 35
+        self.gll_psc_v = gll_psc_v
         self.num_workers=None
         self.base_path=root
 
         self.download_photon_data_flag=True
-        self.download_spacecraft_data_flag=False
+        self.download_spacecraft_data_flag=True
         self.download_4FGL_catalogue_flag=True
 
         
@@ -104,7 +119,7 @@ class fermi_data_dowloader:
         inputs = (url, destination)
 
         print_msg_box("Downloading spacecraft file")
-        download_url(inputs)
+        download_url_axel(inputs)
         print("done")
         return
     
@@ -116,7 +131,7 @@ class fermi_data_dowloader:
         inputs = (url, destination)
 
         print_msg_box("Downloading 4FGL catalogue")
-        download_url(inputs)
+        download_url_axel(inputs)
         print("done")
         return
     
