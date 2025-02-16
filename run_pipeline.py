@@ -145,6 +145,8 @@ GTPSF_DICT =    {
     "outfile" : f"{root}/output/{OUT_LABEL}/gtpsf.fits",
     "irfs" : IRFS,
     "evtype" : EVTYPE,
+    "ra": "",
+    "dec": "",
     "emin" : Emin,
     "emax" : Emax,
     "thetamax" : psf_theta_max,
@@ -155,19 +157,35 @@ GTPSF_DICT =    {
 
 
 # prepare data, step 0 
-os.makedirs(f"{root}/output/{OUT_LABEL}", exist_ok=True)
-fermi_data_dowloader(week_in, week_out, root).download_all()
-gtselect_utils(week_in, week_out,root,f"{root}/output/{OUT_LABEL}/utils").make_selection_txt()
-make_bin_txt(f"{root}/output/{OUT_LABEL}", Emin, Emax, Earr, nenergies).write()
+if initial_step < 1:
+    os.makedirs(f"{root}/output/{OUT_LABEL}", exist_ok=True)
+    fermi_data_dowloader(week_in, week_out, root).download_all()
+    gtselect_utils(week_in, week_out,root,f"{root}/output/{OUT_LABEL}/utils").make_selection_txt()
+    make_bin_txt(f"{root}/output/{OUT_LABEL}", Emin, Emax, Earr, nenergies).write()
 
 #run fermi analysis
-gt_tools.gtselect(GTSELECT_DICT) # step 1
-gt_tools.gtmktime(GTMKTIME_DICT) # step 2
-gt_tools.gtbindef(GTBINDEF_DICT) # step 3
-gt_tools.gtbin(GTBIN_DICT)
-gt_tools.gtltcube(GTLTCUBE_DICT) # step4
-gt_tools.gtexpcube2(GTEXPCUBE2_DICT) # step 5
-gt_tools.gtpsf(GTPSF_DICT) # step 6
-gt_tools.make_hdf5(root, OUT_LABEL) # step 7
+if initial_step < 2:
+    gt_tools.gtselect(GTSELECT_DICT) # step 1
+if initial_step < 3:
+    gt_tools.gtmktime(GTMKTIME_DICT) # step 2
+if initial_step < 4:
+    gt_tools.gtbindef(GTBINDEF_DICT) # step 3
+    gt_tools.gtbin(GTBIN_DICT)
+if initial_step < 5:
+    gt_tools.gtltcube(GTLTCUBE_DICT) # step4
+if initial_step < 6:
+    gt_tools.gtexpcube2(GTEXPCUBE2_DICT) # step 5
+if initial_step < 7:
+    gt_tools.make_hdf5(root, OUT_LABEL) # step 7
+
+
+# gt_tools.gtselect(GTSELECT_DICT) # step 1
+# gt_tools.gtmktime(GTMKTIME_DICT) # step 2
+# gt_tools.gtbindef(GTBINDEF_DICT) # step 3
+# gt_tools.gtbin(GTBIN_DICT)
+# gt_tools.gtltcube(GTLTCUBE_DICT) # step4
+# gt_tools.gtexpcube2(GTEXPCUBE2_DICT) # step 5
+# gt_tools.gtpsf(GTPSF_DICT) # step 6
+# gt_tools.make_hdf5(root, OUT_LABEL) # step 7
 print_msg_box("done")
 

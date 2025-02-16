@@ -29,4 +29,4 @@ psf_ne_points: 50 #number of energy points for the PSF
 clobber: "no" # overwrite existing files yes/no
 
 # initial step in the analysis
-initial_step: 0
+initial_step: 7
