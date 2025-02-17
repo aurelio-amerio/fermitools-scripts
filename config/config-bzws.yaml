@@ -1,0 +1,32 @@
+
+root: "/data/users/Aurelio/fermi"
+OUT_LABEL: "sourceveto-w9-w870-7bins"
+week_in: 9
+week_out: 870 #795
+tmin: 0
+tmax: 0
+Emin: 500 # MeV # 0.5 GeV
+Emax: 1000000 # MeV # 1000 GeV
+Earr: [500, 1000, 2000, 5000, 10000, 50000, 200000, 1000000] # MeV
+ZMAX : 90
+
+# evclass
+# 2048: "SOURCEVETO",
+# 1024: "ULTRACLEANVETO",
+# 512:  "ULTRACLEAN",
+# 256:  "CLEAN",
+# 128:  "SOURCE",
+# 64:   "TRANSIENT010",
+# 16:   "TRANSIENT020"
+EVCLASS: 2048
+EVTYPE: 1
+IRFS: 'P8R3_SOURCEVETO_V3'
+nenergies: 2 # number of energies per bin, if Earr is specfied, else it's the total number of energies between Emin - Emax, in log scale
+healpixorder: 11 #11
+psf_theta_max: 30
+psf_nt_points: 300 #number of theta points for the PSF
+psf_ne_points: 50 #number of energy points for the PSF
+clobber: "no"
+
+# initial step in the analysis
+initial_step: 6

@@ -1,5 +1,5 @@
 # Byte-compiled / optimized / DLL files
-__pycache__/
+__pycache__
 *.py[cod]
 *$py.class
 
@@ -26,6 +26,7 @@ share/python-wheels/
 *.egg
 MANIFEST
 
+__pycache__
 # PyInstaller
 #  Usually these files are written by a python script from a template
 #  before PyInstaller builds the exe, so as to inject date/other infos into it.
@@ -164,4 +165,6 @@ cython_debug/
 test_run
 gtselect_fits.txt
 .vscode/
-sub/condor_logs/
+condor_logs
+
+.vscode
