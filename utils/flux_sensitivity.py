@@ -81,6 +81,8 @@ def main(args=None):
                         help='Maximum energy in MeV.')
     parser.add_argument('--nbin', default=18, type=int,
                         help='Number of energy bins for differential flux calculation.')
+    parser.add_argument('--ebins', default=None, type=str,
+                        help='Energy bins for differential flux calculation. Pass as a comma-separated list (e.g. "10,100,1000"). If not set then the bins will be logarithmically spaced between emin and emax.')
     parser.add_argument('--hpx_nside', default=16, type=int,
                         help='Set the NSIDE parameter of the HEALPix sensivity map. '
                         'WARNING: Running with a large nside parameter is very '
@@ -105,6 +107,9 @@ def main(args=None):
                         'calculation will use the intrinsic observation time of the livetime cube.')
 
     args = parser.parse_args(args)
+    # Parse ebins if provided as a comma-separated string
+    if args.ebins is not None:
+        args.ebins = [float(e) for e in args.ebins.split(',')]
     run_flux_sensitivity(**vars(args))
 
 
@@ -120,6 +125,7 @@ def run_flux_sensitivity(**kwargs):
     emin = kwargs.get('emin', 10**1.5)
     emax = kwargs.get('emax', 10**6.0)
     nbin = kwargs.get('nbin', 18)
+    ebins = kwargs.get('ebins', None)
     glon = kwargs.get('glon', 0.0)
     glat = kwargs.get('glat', 0.0)
     ltcube_filepath = kwargs.get('ltcube', None)
@@ -155,7 +161,13 @@ def run_flux_sensitivity(**kwargs):
 
     log_ebins = np.linspace(np.log10(emin),
                             np.log10(emax), nbin + 1)
-    ebins = 10**log_ebins
+
+    if ebins is not None:
+        ebins = np.array(ebins, dtype=float)
+        assert len(ebins) == nbin + 1, \
+            'ebins must have %d elements.' % (nbin + 1)
+    else:
+        ebins = 10**log_ebins
     ectr = np.exp(utils.edge_to_center(np.log(ebins)))
 
     c = SkyCoord(glon, glat, unit='deg', frame='galactic')
