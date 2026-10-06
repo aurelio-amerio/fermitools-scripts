@@ -115,6 +115,7 @@ def main(args=None):
 
 def run_flux_sensitivity(**kwargs):
 
+
     index = kwargs.get('index', 2.0)
     sedshape = kwargs.get('sedshape', 'PowerLaw')
     cutoff = kwargs.get('cutoff', 1e3)
@@ -367,4 +368,5 @@ def run_flux_sensitivity(**kwargs):
 
 
 if __name__ == "__main__":
+    print("Running flux sensitivity calculation")
     main()
