@@ -9,7 +9,7 @@ Request_cpus = 1
 
 +JobFlavour = "testmatch"
 
-config = config/config.yaml
+config = config/config-7bin.yaml
 
 log                     = condor_logs/cpujob.log
 output                  = condor_logs/outfile.out
